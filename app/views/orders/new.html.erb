@@ -1,0 +1,152 @@
+<div class="checkout-page"
+     style="background:#f8f8f8; max-width:700px; margin:2em auto;
+            padding:2em 1em; border-radius:18px; box-shadow:0 2px 16px #e0e0e0;">
+
+  <h1 class="section-title">
+    <i class="fa fa-credit-card" style="color:#009a09;"></i>
+    Оформлення замовлення
+  </h1>
+
+  <% if @order.errors.any? %>
+    <div style="background:#fee; border:1px solid #f99; padding:1em;
+                border-radius:8px; margin-bottom:1em; color:#c00;">
+      <h4><%= pluralize(@order.errors.count, 'помилка') %>:</h4>
+      <ul style="margin:0; padding-left:1.5em;">
+        <% @order.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <%= form_with(model: @order, url: orders_path, local: true,
+                html: { class: "pure-form pure-form-stacked" }) do |f| %>
+
+    <!-- Товари -->
+    <div style="margin-bottom:2em;">
+      <h3>Ваші товари:</h3>
+      <ul>
+        <% @cart.cart_items.each do |item| %>
+          <li>
+            <%= item.product.name %> —
+            <%= item.quantity %> шт. —
+            <%= item.product.price * item.quantity %> грн
+          </li>
+        <% end %>
+      </ul>
+      <p><strong>Всього: <%= @cart.total_price %> грн</strong></p>
+    </div>
+
+    <!-- Доставка -->
+    <fieldset>
+      <legend>Доставка</legend>
+
+      <div class="pure-control-group">
+        <%= f.label :delivery_option, 'Спосіб доставки *' %>
+        <%= f.select :delivery_option,
+          [['Нова пошта', 'nova_poshta'],
+           ['Укрпошта', 'ukrposhta'],
+           ['Meest Express', 'meest_express']],
+          { prompt: 'Оберіть спосіб доставки...' },
+          { required: true } %>
+      </div>
+
+      <div class="pure-control-group">
+        <%= f.label :delivery_type, 'Тип доставки *' %>
+        <%= f.select :delivery_type,
+          [['Курʼєр', 'courier'],
+           ['Самовивіз з відділення', 'pickup']],
+          { prompt: 'Оберіть тип доставки...' },
+          { required: true } %>
+      </div>
+
+      <div class="pure-control-group">
+        <%= f.label :delivery_method, 'Деталі доставки *' %>
+        <%= f.text_area :delivery_method,
+              required: true,
+              placeholder: 'Адреса або номер відділення' %>
+      </div>
+    </fieldset>
+
+    <!-- Контактні дані -->
+    <fieldset style="margin-bottom:2em;">
+      <legend>Контактні дані отримувача</legend>
+
+      <div class="pure-control-group">
+        <%= f.label :contact_name, "Імʼя отримувача *" %>
+        <%= f.text_field :contact_name, required: true %>
+      </div>
+
+      <div class="pure-control-group">
+        <%= f.label :contact_phone, 'Телефон *' %>
+        <%= f.telephone_field :contact_phone, required: true %>
+      </div>
+
+      <div class="pure-control-group">
+        <%= f.label :contact_email, 'Email *' %>
+        <%= f.email_field :contact_email, required: true %>
+      </div>
+    </fieldset>
+
+    <!-- Оплата -->
+    <fieldset style="margin-bottom:2em;">
+      <legend>Спосіб оплати</legend>
+
+      <div class="pure-control-group">
+        <%= f.label :payment_method, 'Виберіть спосіб оплати *' %>
+        <%= f.select :payment_method,
+          [['Оплата готівкою при доставці', 'cash'],
+           ['Карткова оплата', 'card'],
+           ['LiqPay (онлайн)', 'liqpay']],
+          { prompt: 'Оберіть спосіб оплати...' },
+          { required: true } %>
+      </div>
+
+      <!-- Пояснення -->
+      <div id="payment-cash"
+           style="display:none; background:#e8f5e9; padding:1em;
+                  border-radius:8px; margin-top:1em;">
+        <strong>Оплата готівкою:</strong> при отриманні товару.
+      </div>
+
+      <div id="payment-card"
+           style="display:none; background:#e8f5e9; padding:1em;
+                  border-radius:8px; margin-top:1em;">
+        <strong>Карткова оплата:</strong> перенаправлення після оформлення замовлення.
+      </div>
+
+      <div id="payment-liqpay"
+           style="display:none; background:#e8f5e9; padding:1em;
+                  border-radius:8px; margin-top:1em;">
+        <strong>LiqPay:</strong> онлайн-оплата карткою.
+      </div>
+    </fieldset>
+
+    <div class="pure-controls">
+      <%= f.submit 'Оформити замовлення',
+            class: 'pure-button pure-button-primary',
+            style: 'width:100%; padding:0.8em;' %>
+    </div>
+
+  <% end %>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const select = document.getElementById("order_payment_method");
+  if (!select) return;
+
+  const blocks = {
+    cash:   document.getElementById("payment-cash"),
+    card:   document.getElementById("payment-card"),
+    liqpay: document.getElementById("payment-liqpay")
+  };
+
+  select.addEventListener("change", () => {
+    Object.values(blocks).forEach(el => el.style.display = "none");
+    if (blocks[select.value]) {
+      blocks[select.value].style.display = "block";
+    }
+  });
+});
+</script>

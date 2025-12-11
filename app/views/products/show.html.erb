@@ -1,0 +1,73 @@
+<div class="product-show">
+  <div class="product-back">
+    <%= link_to 'Назад до каталогу', products_path, class: 'pure-button' %>
+  </div>
+  <div class="pure-g product-main">
+    <div class="pure-u-1 pure-u-md-1-2 product-image">
+      <img src="<%= @product.image %>" alt="<%= @product.name %>">
+    </div>
+    <div class="pure-u-1 pure-u-md-1-2 product-info">
+      <h1 class="product-title"><%= @product.name %></h1>
+      <p class="product-desc"><%= @product.description %></p>
+      <div class="product-meta">
+        <span class="product-price"><i class="fa fa-money-bill-wave"></i> <%= number_to_currency(@product.price, unit: "₴") %></span>
+        <span class="product-stock"><i class="fa fa-box"></i> В наявності: <%= @product.stock %> шт.</span>
+        <span class="product-category"><i class="fa fa-tag"></i> <%= @product.category&.name %></span>
+      </div>
+      <div class="product-actions">
+        <%= button_to "Додати в кошик", cart_items_path(product_id: @product.id), method: :post, class: "pure-button pure-button-primary" %>
+        <% if current_user&.admin? %>
+          <%= link_to "Редагувати", edit_product_path(@product), class: "pure-button" %>
+          <%= link_to "Видалити", @product, method: :delete, data: { confirm: "Видалити товар?" }, class: "pure-button pure-button-error" %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <div class="product-reviews">
+    <h2><i class="fa fa-star"></i> Відгуки</h2>
+    <div class="reviews-list">
+      <% @product.reviews.each do |review| %>
+        <div class="review-card">
+          <div class="review-header">
+            <span class="review-user"><i class="fa fa-user-circle"></i> <%= review.user.name.presence || review.user.email %></span>
+            <span class="review-rating">
+              <% 1.upto(5) do |i| %>
+                <% if i <= review.rating %>
+                  <i class="fa fa-star" style="color:#f5b301;"></i>
+                <% else %>
+                  <i class="fa fa-star" style="color:#ddd;"></i>
+                <% end %>
+              <% end %>
+            </span>
+          </div>
+          <div class="review-content"><%= review.content %></div>
+          <% if review.user == current_user || current_user&.admin? %>
+            <div class="review-actions">
+              <%= button_to "Видалити", product_review_path(@product, review), method: :delete, class: "pure-button pure-button-error" %>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+
+    <% if user_signed_in? %>
+      <div class="review-form">
+        <h3>Залишити відгук</h3>
+        <%= form_with(model: [@product, Review.new], local: true, html: { class: "pure-form pure-form-stacked" }) do |f| %>
+          <div class="pure-control-group">
+            <%= f.label :content, "Коментар" %>
+            <%= f.text_area :content, class: "review-content-input" %>
+          </div>
+          <div class="pure-controls">
+            <%= f.label :rating, "Оцінка (1-5)" %>
+            <%= f.number_field :rating, in: 1..5, class: "review-rating-input" %>
+            <%= f.submit "Надіслати", class: "pure-button pure-button-primary" %>
+          </div>
+        <% end %>
+      </div>
+    <% else %>
+      <p class="review-login">Щоб залишити відгук — <%= link_to "Увійдіть", new_user_session_path %></p>
+    <% end %>
+  </div>
+</div>

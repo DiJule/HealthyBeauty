@@ -1,0 +1,30 @@
+<div class="catalog-fullpage">
+  <%= render 'filters_sidebar' %>
+  <div class="catalog-main">
+    <h1 class="catalog-title"><i class="fa fa-store"></i> Каталог товарів</h1>
+    <div class="catalog-actions">
+      <% if current_user&.admin? %>
+        <%= link_to "Додати товар", new_product_path, class: "pure-button pure-button-primary" %>
+      <% end %>
+    </div>
+    <div class="catalog-list">
+      <% @products.each do |product| %>
+        <div class="catalog-card">
+          <div class="catalog-card-img">
+            <img src="<%= product.image  %>" alt="<%= product.name %>">
+          </div>
+          <div class="catalog-card-info">
+            <h3 class="catalog-card-title">
+              <%= link_to product.name, product_path(product) %>
+            </h3>
+            <div class="catalog-card-meta">
+              <span class="catalog-card-price"><i class="fa fa-money-bill-wave"></i> <%= number_to_currency(product.price, unit: "₴") %></span>
+              <span class="catalog-card-stock"><i class="fa fa-box"></i> <%= product.stock %> шт.</span>
+            </div>
+            <span class="catalog-card-category"><i class="fa fa-tag"></i> <%= product.category&.name %></span>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

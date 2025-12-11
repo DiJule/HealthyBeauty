@@ -1,0 +1,17 @@
+<div style="max-width:700px; margin:2em auto; padding:1.5em; background:#fff; border-radius:12px; box-shadow:0 2px 12px #ddd;">
+  <h2>Переадресація на платіжний шлюз LiqPay</h2>
+  <p>Ви будете перенаправлені на сторінку оплати. Якщо цього не сталося, натисніть кнопку "Оплатити".</p>
+
+  <form id="liqpay_form" action="<%= @liqpay[:url] %>" method="post">
+    <input type="hidden" name="data" value="<%= @liqpay[:data] %>" />
+    <input type="hidden" name="signature" value="<%= @liqpay[:signature] %>" />
+    <button type="submit" class="pure-button pure-button-primary">Оплатити</button>
+  </form>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function(){
+      // auto-submit after short delay
+      setTimeout(function(){ document.getElementById('liqpay_form').submit(); }, 800);
+    });
+  </script>
+</div>

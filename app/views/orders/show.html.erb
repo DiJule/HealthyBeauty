@@ -1,0 +1,68 @@
+<div class="order-show-page" style="background:#f8f8f8; max-width:700px; margin:2em auto; padding:2em 1em; border-radius:18px; box-shadow:0 2px 16px #e0e0e0;">
+  <h1 class="section-title"><i class="fa fa-file-invoice" style="color:#009a09;"></i> Ваше замовлення №<%= @order.id %></h1>
+  
+  <div style="margin-bottom:2em; padding:1em; background:#e8f5e9; border-radius:8px;">
+    <p>Статус: <strong><%= @order.status %></strong></p>
+    <p>Сума: <strong><%= @order.total %> грн</strong></p>
+  </div>
+
+  <h3>Контактна інформація:</h3>
+  <div style="margin-bottom:2em; padding:1em; background:#fff; border-left:4px solid #009a09;">
+    <p><strong>Імʼя отримувача:</strong> <%= @order.contact_name %></p>
+    <p><strong>Телефон:</strong> <%= @order.contact_phone %></p>
+    <p><strong>Email:</strong> <%= @order.contact_email %></p>
+  </div>
+
+  <h3>Доставка:</h3>
+  <div style="margin-bottom:2em; padding:1em; background:#fff; border-left:4px solid #009a09;">
+    <p><strong>Спосіб доставки:</strong> <%= @order.delivery_option %></p>
+    <p><strong>Тип доставки:</strong> <%= @order.delivery_type %></p>
+    <p><strong>Деталі:</strong> <%= @order.delivery_method %></p>
+  </div>
+
+  <h3>Оплата:</h3>
+  <div style="margin-bottom:2em; padding:1em; background:#fff; border-left:4px solid #009a09;">
+    <% if @order.payment %>
+      <p><strong>Спосіб оплати:</strong>
+        <%= case @order.payment.method
+            when 'cash'
+              'Готівка при доставці'
+            when 'card'
+              'Карткова оплата'
+            when 'liqpay'
+              'LiqPay (онлайн)'
+            else
+              @order.payment.method
+            end %>
+      </p>
+      <p><strong>Статус оплати:</strong> <%= @order.payment.status %></p>
+    <% else %>
+      <p><strong>Спосіб оплати:</strong>
+        <%= case @order.payment_method
+            when 'cash'
+              'Готівка при доставці'
+            when 'card'
+              'Карткова оплата'
+            when 'liqpay'
+              'LiqPay (онлайн)'
+            else
+              @order.payment_method
+            end %>
+      </p>
+    <% end %>
+  </div>
+
+  <h3>Товари:</h3>
+  <ul style="margin-bottom:2em;">
+    <% @order.order_items.each do |item| %>
+      <li>
+        <%= item.product.name %> — <%= item.quantity %> шт. — <%= item.price * item.quantity %> грн
+      </li>
+    <% end %>
+  </ul>
+
+  <div style="margin-top:1em; display:flex; gap:1em;">
+    <%= link_to 'До моїх замовлень', orders_path, class: 'pure-button' %>
+    <%= link_to 'На головну', root_path, class: 'pure-button' %>
+  </div>
+</div>

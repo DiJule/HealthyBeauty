@@ -1,0 +1,128 @@
+
+<div class="admin-dashboard" style="background:#f8f8f8; max-width:1200px; margin:2em auto; padding:2em 1em; border-radius:18px; box-shadow:0 2px 16px #e0e0e0;">
+  <h1 class="admin-title" style="text-align:center; font-size:2em; font-weight:700; color:#222; margin-bottom:1.5em;"><i class="fa fa-cogs" style="color:#009a09;"></i> Адмін-панель</h1>
+  <div class="admin-blocks" style="display:flex; gap:2em; flex-wrap:wrap; justify-content:space-between;">
+    <div class="admin-block" style="flex:1 1 220px; background:#fff; border-radius:12px; box-shadow:0 2px 12px #ccc; padding:1.5em; margin-bottom:1em; text-align:center;">
+      <h2 style="color:#2ecc71; font-size:1.3em;">Користувачі</h2>
+      <p>Всього: <%= @users.count %></p>
+  <%= link_to 'Список користувачів', users_path, class: 'pure-button', style: 'background:#eafaf1; color:#2ecc71; border-radius:6px; margin-top:0.5em;' %>
+    </div>
+    <div class="admin-block" style="flex:1 1 220px; background:#fff; border-radius:12px; box-shadow:0 2px 12px #ccc; padding:1.5em; margin-bottom:1em; text-align:center;">
+      <h2 style="color:#2ecc71; font-size:1.3em;">Товари</h2>
+      <p>Всього: <%= @products.count %></p>
+      <%= link_to 'Каталог', products_path, class: 'pure-button pure-button-primary', style: 'margin-top:0.5em;' %>
+      <%= link_to 'Додати товар', new_product_path, class: 'pure-button', style: 'background:#eafaf1; color:#2ecc71; border-radius:6px; margin-top:0.5em;' %>
+    </div>
+    <div class="admin-block" style="flex:1 1 220px; background:#fff; border-radius:12px; box-shadow:0 2px 12px #ccc; padding:1.5em; margin-bottom:1em; text-align:center;">
+      <h2 style="color:#2ecc71; font-size:1.3em;">Замовлення</h2>
+      <p>Всього: <%= @orders.count %></p>
+  <%= link_to 'Всі замовлення', admin_orders_path, class: 'pure-button pure-button-primary', style: 'margin-top:0.5em;' %>
+      <%= link_to 'Всі коментарі', admin_reviews_path, class: 'pure-button', style: 'background:#eafaf1; color:#2ecc71; border-radius:6px; margin-top:0.5em;' %>
+    </div>
+    <div class="admin-block" style="flex:1 1 220px; background:#fff; border-radius:12px; box-shadow:0 2px 12px #ccc; padding:1.5em; margin-bottom:1em; text-align:center;">
+      <h2 style="color:#2ecc71; font-size:1.3em;">Категорії</h2>
+      <p>Всього: <%= @categories.count %></p>
+      <%= link_to 'Категорії', categories_path, class: 'pure-button', style: 'background:#eafaf1; color:#2ecc71; border-radius:6px; margin-top:0.5em;' %>
+    </div>
+  </div>
+  </div>
+
+  <div class="admin-analytics">
+  <h2>Аналітика користувацької активності</h2>
+
+  <div class="analytics-grid">
+    <div class="chart-card">
+      <h4>Активність за днями (останні 14 днів)</h4>
+      <canvas id="activityByDayChart"></canvas>
+    </div>
+
+    <div class="chart-card">
+      <h4>Топ сторінок</h4>
+      <canvas id="topPathsChart"></canvas>
+    </div>
+
+    <div class="chart-card">
+      <h4>Запити по годинах (сьогодні)</h4>
+      <canvas id="requestsByHourChart"></canvas>
+    </div>
+  </div>
+</div>
+
+
+  <%= javascript_include_tag 'https://cdn.jsdelivr.net/npm/chart.js', defer: true %>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Activity by day
+      var activityLabels = <%= @activity_by_day.keys.map(&:to_s).to_json.html_safe %>;
+      var activityData = <%= @activity_by_day.values.to_json.html_safe %>;
+      var ctx = document.getElementById('activityByDayChart').getContext('2d');
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: activityLabels,
+          datasets: [{ label: 'Запити', backgroundColor: '#2ecc71', data: activityData }]
+        },
+        options: { responsive: true, maintainAspectRatio: false }
+      });
+
+      // Top paths
+      var topPathLabels = <%= @top_paths.keys.to_json.html_safe %>;
+      var topPathData = <%= @top_paths.values.to_json.html_safe %>;
+      var ctx2 = document.getElementById('topPathsChart').getContext('2d');
+      new Chart(ctx2, {
+        type: 'pie',
+        data: { labels: topPathLabels, datasets: [{ data: topPathData, backgroundColor: ['#2ecc71','#27ae60','#16a085','#1abc9c','#f1c40f','#e67e22','#e74c3c','#9b59b6','#34495e','#7f8c8d'] }] },
+        options: { responsive: true, maintainAspectRatio: false }
+      });
+
+      // Requests by hour
+      var hourLabels = [];
+      for (var h = 0; h < 24; h++) {
+        hourLabels.push((h < 10 ? '0' : '') + h + ':00');
+      }
+      var hourData = <%= @requests_per_hour.to_json.html_safe %>;
+      var ctx3 = document.getElementById('requestsByHourChart').getContext('2d');
+      new Chart(ctx3, {
+        type: 'line',
+        data: { labels: hourLabels, datasets: [{ label: 'Запити сьогодні', borderColor: '#2ecc71', backgroundColor: 'rgba(46,204,113,0.2)', fill: true, data: hourData }] },
+        options: { responsive: true, maintainAspectRatio: false }
+      });
+    });
+  </script>
+</div>
+
+<style>
+  .admin-analytics {
+  margin-top: 2em;
+  background: #fff;
+  padding: 1.5em;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px #ccc;
+}
+
+.analytics-grid {
+  display: flex;
+  gap: 1.5em;
+  flex-wrap: wrap;
+}
+
+.chart-card {
+  flex: 1 1 340px;
+  height: 300px;              /* ✅ загальна висота картки */
+  padding: 0.5em 0.5em 0;
+  box-sizing: border-box;
+}
+
+.chart-card h4 {
+  margin: 0 0 0.5em;
+  height: 24px;               /* ✅ фіксуємо місце під заголовок */
+  line-height: 24px;
+}
+
+.chart-card canvas {
+  display: block;
+  width: 100% !important;
+  height: calc(100% - 24px) !important;  /* ✅ решта — під графік */
+}
+</style>

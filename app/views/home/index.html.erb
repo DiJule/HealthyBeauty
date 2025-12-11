@@ -1,0 +1,128 @@
+<%= stylesheet_link_tag 'home', media: 'all' %>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous">
+<section class="home-hero">
+  <h1>Healthy&Beauty</h1>
+  <p>Магазин здоров'я та краси для всієї родини</p>
+  <div class="home-hero-btns">
+    <a href="<%= products_path %>" class="pure-button pure-button-primary">Перейти до каталогу</a>
+    <a href="<%= categories_path %>" class="pure-button" style="margin-left:1em;">Категорії</a>
+  </div>
+</section>
+<section class="banner"></section>
+
+<section class="home-about">
+  <h2>Про магазин</h2>
+  <p>Healthy&Beauty — це сучасний онлайн-магазин, де ви знайдете найкращі товари для здоров'я, догляду за собою та краси. Ми працюємо лише з перевіреними постачальниками, гарантуємо якість і швидку доставку.</p>
+</section>
+
+<section class="home-advantages">
+  <div class="home-advantage">
+    <i class="fa-solid fa-certificate icon"></i>
+    <div class="home-advantage-title">Сертифікована продукція</div>
+    <div class="home-advantage-desc">Тільки офіційні постачальники</div>
+  </div>
+  <div class="home-advantage">
+    <i class="fa-solid fa-truck-fast icon"></i>
+    <div class="home-advantage-title">Швидка доставка</div>
+    <div class="home-advantage-desc">Відправка по всій Україні</div>
+  </div>
+  <div class="home-advantage">
+    <i class="fa-solid fa-headset icon"></i>
+    <div class="home-advantage-title">Професійна консультація</div>
+    <div class="home-advantage-desc">Підтримка 7 днів на тиждень</div>
+  </div>
+  <div class="home-advantage">
+    <i class="fa-solid fa-gift icon"></i>
+    <div class="home-advantage-title">Акції та знижки</div>
+    <div class="home-advantage-desc">Постійні вигідні пропозиції</div>
+  </div>
+</section>
+
+<section style="background:#e0ffe0; border-radius:0; box-shadow:0 2px 12px #e0e0e0; margin:1.5em auto; max-width:1100px; padding:2em 1em;">
+  <h2 class="section-title">Популярні товари</h2>
+  <div class="pure-g" style="gap:1em;">
+    <% Product.order('RANDOM()').limit(4).each do |product| %>
+      <div class="catalog-card">
+          <div class="catalog-card-img">
+            <img src="<%= product.image  %>" alt="<%= product.name %>">
+          </div>
+          <div class="catalog-card-info">
+            <h3 class="catalog-card-title">
+              <%= link_to product.name, product_path(product) %>
+            </h3>
+            <div class="catalog-card-meta">
+              <span class="catalog-card-price"><i class="fa fa-money-bill-wave"></i> <%= number_to_currency(product.price, unit: "₴") %></span>
+              <span class="catalog-card-stock"><i class="fa fa-box"></i> <%= product.stock %> шт.</span>
+            </div>
+          <span class="catalog-card-category"><i class="fa fa-tag"></i> <%= product.category&.name %></span>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</section>
+
+<section style="background:#fff; border-radius:0; box-shadow:0 2px 12px #e0e0e0; margin:1.5em auto; max-width:1100px; padding:2em 1em;">
+  <h2 class="section-title">Відгуки клієнтів</h2>
+  <div class="pure-g" style="gap:1em;">
+    <div class="pure-u-1 pure-u-md-1-3" style="padding:1em;">
+      <div style="background:#f8fff8; border-radius:0; box-shadow:0 2px 8px #e0e0e0; padding:1.2em; height:100%;">
+        <blockquote style="font-style:italic; color:#333; border-left:4px solid #2ecc71; padding-left:1em; margin:0;">"Дуже швидка доставка і якісний сервіс!"<br><span style="font-weight:bold;">— Олена</span></blockquote>
+      </div>
+    </div>
+    <div class="pure-u-1 pure-u-md-1-3" style="padding:1em;">
+      <div style="background:#f8fff8; border-radius:0; box-shadow:0 2px 8px #e0e0e0; padding:1.2em; height:100%;">
+        <blockquote style="font-style:italic; color:#333; border-left:4px solid #2ecc71; padding-left:1em; margin:0;">"Завжди знаходжу тут улюблену косметику!"<br><span style="font-weight:bold;">— Марина</span></blockquote>
+      </div>
+    </div>
+    <div class="pure-u-1 pure-u-md-1-3" style="padding:1em;">
+      <div style="background:#f8fff8; border-radius:0; box-shadow:0 2px 8px #e0e0e0; padding:1.2em; height:100%;">
+        <blockquote style="font-style:italic; color:#333; border-left:4px solid #2ecc71; padding-left:1em; margin:0;">"Асортимент і ціни приємно дивують!"<br><span style="font-weight:bold;">— Ігор</span></blockquote>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="home-partners">
+  <h2 class="section-title">Наші партнери</h2>
+  <div class="home-partners-list">
+    <div class="home-partner-logo">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/6/67/Nivea_Logo.png" alt="Nivea">
+    </div>
+    <div class="home-partner-logo">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/L%27Or%C3%A9al_logo.svg/1280px-L%27Or%C3%A9al_logo.svg.png" alt="L'Oreal">
+    </div>
+    <div class="home-partner-logo">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Johnson_and_Johnson_Logo.svg/1000px-Johnson_and_Johnson_Logo.svg.png" alt="Johnson & Johnson">
+    </div>
+    <div class="home-partner-logo">
+      <img src="https://upload.wikimedia.org/wikipedia/uk/thumb/e/e4/Unilever.svg/1089px-Unilever.svg.png" alt="Unilever">
+    </div>
+    <div class="home-partner-logo">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/Procter_%26_Gamble_logo.svg/1200px-Procter_%26_Gamble_logo.svg.png" alt="Procter & Gamble">
+    </div>
+  </div>
+</section>
+
+<section style="background:#fff; border-radius:0; box-shadow:0 2px 12px #e0e0e0; margin:1.5em auto 2em auto; max-width:1100px; padding:2em 1em;">
+  <h2 class="section-title">FAQ</h2>
+  <div class="pure-g" style="gap:1em;">
+    <div class="pure-u-1 pure-u-md-1-2" style="padding:1em;">
+      <details style="margin-bottom:1em;">
+        <summary style="font-weight:600; color:#2ecc71; cursor:pointer;">Як зробити замовлення?</summary>
+        <div style="font-size:1em; color:#444; margin-top:0.5em;">Додаєте товар у кошик, переходите до оформлення та вводите свої дані.</div>
+      </details>
+      <details style="margin-bottom:1em;">
+        <summary style="font-weight:600; color:#2ecc71; cursor:pointer;">Які є способи оплати?</summary>
+        <div style="font-size:1em; color:#444; margin-top:0.5em;">Карткою онлайн, післяплата, готівкою при отриманні.</div>
+      </details>
+      <details style="margin-bottom:1em;">
+        <summary style="font-weight:600; color:#2ecc71; cursor:pointer;">Чи можна повернути товар?</summary>
+        <div style="font-size:1em; color:#444; margin-top:0.5em;">Так, протягом 14 днів згідно із законом.</div>
+      </details>
+      <details style="margin-bottom:1em;">
+        <summary style="font-weight:600; color:#2ecc71; cursor:pointer;">Як отримати консультацію?</summary>
+        <div style="font-size:1em; color:#444; margin-top:0.5em;">Зателефонуйте або напишіть нам — ми завжди на зв'язку!</div>
+      </details>
+    </div>
+  </div>
+</section>

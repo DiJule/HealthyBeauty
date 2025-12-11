@@ -1,0 +1,13 @@
+one:
+  user: one
+  status: "confirmed"
+  total: 199.99
+  delivery_method: "courier"
+  delivery_option: "express"
+
+two:
+  user: two
+  status: "processing"
+  total: 89.50
+  delivery_method: "pickup"
+  delivery_option: "standard"

@@ -1,0 +1,11 @@
+one:
+  name: John Doe
+  email: john@example.com
+  encrypted_password: <%= Devise::Encryptor.digest(User, 'password123') %>
+  role: 0
+
+two:
+  name: Jane Smith
+  email: jane@example.com
+  encrypted_password: <%= Devise::Encryptor.digest(User, 'secure456') %>
+  role: 1

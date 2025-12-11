@@ -1,0 +1,56 @@
+<h2 style="text-align:center; margin-top: 5%;">Вхід до акаунту</h2>
+<% if flash[:alert] %>
+  <div class="flash-alert" style="background:#ffe6e6; color:#b30000; padding:1em; border-radius:8px; margin-bottom:1em; text-align:center; box-shadow:0 2px 6px rgba(0,0,0,0.1);">
+    <i class="fa fa-exclamation-circle" style="margin-right:0.5em;"></i>
+    <%= flash[:alert] %>
+  </div>
+<% end %>
+
+<% if resource.errors.any? %>
+  <div class="validation-errors" style="background:#fff3cd; color:#856404; padding:1em; border-radius:8px; margin-bottom:1em; box-shadow:0 2px 6px rgba(0,0,0,0.1);">
+    <strong style="display:block; margin-bottom:0.5em;">
+      <i class="fa fa-exclamation-triangle" style="margin-right:0.5em;"></i>
+      Виникли помилки при вході:
+    </strong>
+    <ul style="margin:0; padding-left:1.2em;">
+      <% resource.errors.full_messages.each do |msg| %>
+        <li style="margin-bottom:0.3em;"><%= msg %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+
+<div class="login-form">
+<%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: "pure-form pure-form-stacked" }) do |f| %>
+  <% if resource.errors.any? %>
+    <div class="error-messages">
+      <ul>
+        <% resource.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="pure-control-group">
+    <%= f.label :email, "Електронна пошта" %>
+    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+  </div>
+  <div class="pure-control-group">
+    <%= f.label :password, "Пароль" %>
+    <%= f.password_field :password, autocomplete: "current-password" %>
+  </div>
+  <% if devise_mapping.rememberable? -%>
+    <div class="pure-control-group" style="display:flex;">
+      <%= f.check_box :remember_me %>
+      <%= f.label :remember_me, "Запам'ятати мене?", style: "margin-bottom: 5px;" %>
+    </div>
+  <% end -%>
+  <div class="pure-controls">
+    <%= f.submit "Увійти", class: "pure-button pure-button-primary" %>
+  </div>
+<% end %>
+<div style="text-align:center; margin-top:1em;">
+  <%= render "devise/shared/links" %>
+</div>
+</div>

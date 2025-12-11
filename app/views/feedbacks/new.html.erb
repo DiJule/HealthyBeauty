@@ -1,0 +1,8 @@
+<h1>Зворотній зв’язок</h1>
+
+<%= form_with(model: @feedback) do |f| %>
+  <%= f.label :message, "Ваше повідомлення" %>
+  <%= f.text_area :message %>
+
+  <%= f.submit "Надіслати" %>
+<% end %>

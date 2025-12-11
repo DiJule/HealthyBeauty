@@ -1,0 +1,34 @@
+<div class="admin-dashboard" style="background:#f8f8f8; max-width:900px; margin:2em auto; padding:2em 1em; border-radius:18px; box-shadow:0 2px 16px #e0e0e0;">
+  <h1 class="section-title"><i class="fa fa-comments" style="color:#009a09;"></i> Всі коментарі (відгуки)</h1>
+  <% if @reviews.any? %>
+    <table class="pure-table pure-table-bordered" style="width:100%;">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Товар</th>
+          <th>Користувач</th>
+          <th>Оцінка</th>
+          <th>Вміст</th>
+          <th>Дата</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @reviews.each do |review| %>
+          <tr>
+            <td><%= review.id %></td>
+            <td><%= link_to review.product.name, product_path(review.product) %></td>
+            <td><%= review.user.email %></td>
+            <td><%= review.rating %></td>
+            <td><%= review.content %></td>
+            <td><%= review.created_at.strftime('%d.%m.%Y %H:%M') %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <p>Відгуків не знайдено.</p>
+  <% end %>
+  <div style="margin-top:1em;">
+    <%= link_to 'Назад до адмін-панелі', admin_dashboard_path, class: 'pure-button' %>
+  </div>
+</div>

@@ -1,0 +1,38 @@
+<h2 style="text-align:center; margin-top: 5%;">Реєстрація</h2>
+<% if flash[:alert] %>
+  <div class="error-messages"><%= flash[:alert] %></div>
+<% end %>
+<div class ="registration-form">
+<%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { class: "pure-form pure-form-stacked" }) do |f| %>
+  <% if resource.errors.any? %>
+  <div class="error-messages">
+    <ul>
+      <% resource.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+    </ul>
+  </div>
+  <% end %>
+  <div class="pure-control-group">
+    <%= f.label :email, "Електронна пошта" %>
+    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+  </div>
+  <div class="pure-control-group">
+    <%= f.label :password, "Пароль" %>
+    <% if @minimum_password_length %>
+      <em>(мінімум <%= @minimum_password_length %> символів)</em>
+    <% end %>
+    <%= f.password_field :password, autocomplete: "new-password" %>
+  </div>
+  <div class="pure-control-group">
+    <%= f.label :password_confirmation, "Підтвердження паролю" %>
+    <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
+  </div>
+  <div class="pure-controls">
+    <%= f.submit "Зареєструватися", class: "pure-button pure-button-primary" %>
+  </div>
+<% end %>
+<div style="text-align:center; margin-top:1em;">
+  <%= render "devise/shared/links" %>
+</div>
+</div>

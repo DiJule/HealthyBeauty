@@ -1,0 +1,31 @@
+<aside class="catalog-sidebar">
+  <form method="get" action="<%= products_path %>" class="pure-form catalog-filters-form">
+    <fieldset>
+      <legend><i class="fa fa-filter"></i> Фільтри</legend>
+      <div class="catalog-filter-group">
+        <label for="search"><i class="fa fa-search"></i> Пошук</label>
+        <input type="text" name="search" id="search" value="<%= params[:search] %>" placeholder="Назва або опис...">
+      </div>
+      <div class="catalog-filter-group">
+        <label for="category"><i class="fa fa-tag"></i> Категорія</label>
+        <select name="category" id="category">
+          <option value="">Всі категорії</option>
+          <% Category.all.each do |cat| %>
+            <option value="<%= cat.id %>" <%= 'selected' if params[:category].to_s == cat.id.to_s %>><%= cat.name %></option>
+          <% end %>
+        </select>
+      </div>
+      <div class="catalog-filter-group">
+        <label for="sort"><i class="fa fa-sort"></i> Сортування</label>
+        <select name="sort" id="sort">
+          <option value="newest" <%= 'selected' if params[:sort] == 'newest' %>>Нові спочатку</option>
+          <option value="price_asc" <%= 'selected' if params[:sort] == 'price_asc' %>>Ціна ↑</option>
+          <option value="price_desc" <%= 'selected' if params[:sort] == 'price_desc' %>>Ціна ↓</option>
+          <option value="name_asc" <%= 'selected' if params[:sort] == 'name_asc' %>>Назва А-Я</option>
+          <option value="name_desc" <%= 'selected' if params[:sort] == 'name_desc' %>>Назва Я-А</option>
+        </select>
+      </div>
+      <button type="submit" class="pure-button pure-button-primary"><i class="fa fa-search"></i> Застосувати</button>
+    </fieldset>
+  </form>
+</aside>

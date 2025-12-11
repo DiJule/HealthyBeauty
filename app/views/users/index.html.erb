@@ -1,0 +1,32 @@
+<div class="admin-dashboard" style="background:#f8f8f8; max-width:900px; margin:2em auto; padding:2em 1em; border-radius:18px; box-shadow:0 2px 16px #e0e0e0;">
+  <h1 class="section-title"><i class="fa fa-users" style="color:#009a09;"></i> Список користувачів</h1>
+  <% if @users.any? %>
+    <table class="pure-table pure-table-bordered" style="width:100%;">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Ім'я</th>
+          <th>Email</th>
+          <th>Роль</th>
+          <th>Дата реєстрації</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @users.each do |user| %>
+          <tr>
+            <td><%= user.id %></td>
+            <td><%= user.name %></td>
+            <td><%= user.email %></td>
+            <td><%= user.role %></td>
+            <td><%= user.created_at.strftime('%d.%m.%Y %H:%M') %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <p>Користувачів не знайдено.</p>
+  <% end %>
+  <div style="margin-top:1em;">
+    <%= link_to 'Назад до адмін-панелі', admin_dashboard_path, class: 'pure-button' %>
+  </div>
+</div>

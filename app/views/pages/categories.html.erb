@@ -1,0 +1,20 @@
+<section class="home-about" style="max-width:700px; margin:2em auto 1em auto;">
+  <h2>Категорії товарів</h2>
+  <p>Оберіть категорію, щоб переглянути всі товари цього розділу.</p>
+</section>
+
+<section class="home-categories">
+  <div class="home-categories-list">
+    <% Category.all.each do |category| %>
+      <div class="home-category-card">
+        <div class="home-category-icon"><i class="fa-solid fa-folder-open"></i></div>
+        <div class="home-category-title">
+          <%= link_to category.name, products_path(category_id: category.id), class: 'home-category-link' %>
+        </div>
+        <% if category.description.present? %>
+          <div class="home-category-desc"><%= truncate(category.description, length: 60) %></div>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</section>

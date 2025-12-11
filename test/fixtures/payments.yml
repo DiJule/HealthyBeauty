@@ -1,0 +1,9 @@
+one:
+  order: one
+  status: "paid"
+  method: "card"
+
+two:
+  order: two
+  status: "pending"
+  method: "cash"

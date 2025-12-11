@@ -1,0 +1,39 @@
+<%= form_with(model: @product, local: true, html: { class: "pure-form pure-form-stacked product-form" }) do |f| %>
+  <% if @product.errors.any? %>
+    <div style="color:red;">
+      <h4>Помилки:</h4>
+      <ul>
+        <% @product.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <div class="pure-control-group">
+    <%= f.label :name, "Назва" %>
+    <%= f.text_field :name, required: true %>
+  </div>
+  <div class="pure-control-group">
+    <%= f.label :description, "Опис" %>
+    <%= f.text_area :description %>
+  </div>
+  <div class="pure-control-group">
+    <%= f.label :price, "Ціна" %>
+    <%= f.number_field :price, step: 0.01, required: true %>
+  </div>
+  <div class="pure-control-group">
+    <%= f.label :stock, "Кількість" %>
+    <%= f.number_field :stock, required: true %>
+  </div>
+  <div class="pure-control-group">
+    <%= f.label :category_id, "Категорія" %>
+    <%= f.collection_select :category_id, Category.all, :id, :name, prompt: "Оберіть категорію" %>
+  </div>
+  <div class="pure-control-group">
+    <%= f.label :image, "Зображення" %>
+    <%= f.text_field :image, required: false %>
+  </div>
+  <div class="pure-controls">
+    <%= f.submit nil, class: "pure-button pure-button-primary", value: "Зберегти товар" %>
+  </div>
+<% end %>
