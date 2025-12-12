@@ -18,7 +18,7 @@ class AdminController < ApplicationController
     (13.days.ago.to_date..Date.today).each do |date|
       @activity_by_day[date] ||= 0
     end
-    
+
     @activity_by_day = @activity_by_day.sort_by { |date, _| date }.to_h
 
 
