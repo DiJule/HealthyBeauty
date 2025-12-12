@@ -15,10 +15,12 @@ class AdminController < ApplicationController
                                  .order("date(created_at)")
                                  .count
     # Fill missing days with 0
-    (13.days.ago.to_date..Date.today).each do |date|
-      @activity_by_day[date.to_s] ||= 0 unless @activity_by_day.key?(date.to_s)
-    end
-    @activity_by_day = @activity_by_day.sort.to_h
+(13.days.ago.to_date..Date.today).each do |date|
+  @activity_by_day[date] ||= 0
+end
+
+@activity_by_day = @activity_by_day.sort_by { |date, _| date }.to_h
+
 
     # Top paths - provide at least empty data
     @top_paths = ActivityLog.group(:path).order("count(id) DESC").limit(10).count("id")
