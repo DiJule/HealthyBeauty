@@ -9,7 +9,7 @@ class ApplicationController < ActionController::Base
 
   def log_activity
     # avoid logging asset requests and health checks
-    return if request.path.start_with?('/assets') || request.path.match?(/rails\/pwa|service-worker|manifest|up/)
+    return if request.path.start_with?("/assets") || request.path.match?(/rails\/pwa|service-worker|manifest|up/)
     begin
       filtered = filtered_activity_params
       ActivityLog.create(

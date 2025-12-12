@@ -5,7 +5,7 @@ gem "rails", "~> 7.2.2", ">= 7.2.2.2"
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
 gem "sprockets-rails"
 # Use sqlite3 as the database for Active Record (development/test only)
-gem "sqlite3", ">= 1.4", group: [:development, :test]
+gem "sqlite3", ">= 1.4", group: [ :development, :test ]
 # Use PostgreSQL as the database for Active Record (production)
 gem "pg", "~> 1.5", group: :production
 # Use the Puma web server [https://github.com/puma/puma]
@@ -41,7 +41,7 @@ gem "bootsnap", require: false
 gem "devise"
 
 # faraday HTTP client library
-gem 'faraday'
+gem "faraday"
 
 # Environment variables
 gem "dotenv-rails", "~> 2.8"

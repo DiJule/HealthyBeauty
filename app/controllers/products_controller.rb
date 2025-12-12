@@ -67,14 +67,14 @@ class ProductsController < ApplicationController
   def analyze_with_ai
     @product = Product.find(params[:id])
     require_admin
-    
+
     # Call LocalAiService to analyze the product
     analysis = LocalAiService.analyze_product(@product.name, @product.description)
-    
+
     # Log for debugging
     Rails.logger.info("Product: #{@product.name}, Desc: #{@product.description}")
     Rails.logger.info("Analysis: #{analysis.inspect}")
-    
+
     # Update product with AI-generated content
     @product.update(
       characteristics: analysis["characteristics"]&.join("\n"),

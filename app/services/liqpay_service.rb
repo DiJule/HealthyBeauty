@@ -7,7 +7,7 @@ class LiqpayService
   def initialize(public_key: ENV["LIQPAY_PUBLIC_KEY"], private_key: ENV["LIQPAY_PRIVATE_KEY"])
     @public_key = public_key.to_s.strip
     @private_key = private_key.to_s.strip
-    
+
     raise "LIQPAY_PUBLIC_KEY is not configured in environment" if @public_key.blank?
     raise "LIQPAY_PRIVATE_KEY is not configured in environment" if @private_key.blank?
   end
@@ -36,7 +36,7 @@ class LiqpayService
 
   def signature_for(data)
     digest = OpenSSL::Digest::SHA1.hexdigest(@private_key + data + @private_key)
-    Base64.strict_encode64([digest].pack("H*"))
+    Base64.strict_encode64([ digest ].pack("H*"))
   end
 
   def verify?(data, signature)

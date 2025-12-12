@@ -42,7 +42,7 @@ Rails.application.routes.draw do
   post "payments/callback", to: "payments#callback", as: :payments_callback
 
   resources :users, only: [ :index ]
-  resources :chat, only: [:index, :create]
+  resources :chat, only: [ :index, :create ]
 
   get "admin/dashboard", to: "admin#dashboard"
   get "admin/orders", to: "admin_orders#index", as: :admin_orders

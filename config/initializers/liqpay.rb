@@ -3,8 +3,8 @@
 
 Rails.application.config.to_prepare do
   LIQPAY_CONFIG = {
-    public_key: ENV.fetch('LIQPAY_PUBLIC_KEY', ''),
-    private_key: ENV.fetch('LIQPAY_PRIVATE_KEY', '')
+    public_key: ENV.fetch("LIQPAY_PUBLIC_KEY", ""),
+    private_key: ENV.fetch("LIQPAY_PRIVATE_KEY", "")
   }.freeze
 
   # Log warning if keys are not configured (but don't fail on startup)

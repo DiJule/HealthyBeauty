@@ -1,7 +1,7 @@
 class LocalAiService
-  # Local AI system for generating product characteristics, benefits and usage without external APIs
-  
-  # Simple keyword-to-data mappings for reliability
+# Local AI system for generating product characteristics, benefits and usage without external APIs
+
+# Simple keyword-to-data mappings for reliability
 KEYWORDS_MAPPING = {
   # MAKEUP ---------------------------------------------------------------------
 
@@ -311,7 +311,7 @@ KEYWORDS_MAPPING = {
 
     KEYWORDS_MAPPING.each do |category, data|
       score = data[:keywords].count { |keyword| words.include?(keyword) }
-      
+
       if score > best_score
         best_score = score
         best_match = data
@@ -327,8 +327,8 @@ KEYWORDS_MAPPING = {
     end
 
     # Default fallback
-    default_characteristics = ["Якісна формула", "Перевірено дерматологом", "Безпечно для шкіри"]
-    default_benefits = ["Видимий результат", "Приємна текстура", "Легко використовувати"]
+    default_characteristics = [ "Якісна формула", "Перевірено дерматологом", "Безпечно для шкіри" ]
+    default_benefits = [ "Видимий результат", "Приємна текстура", "Легко використовувати" ]
     default_usage = "Нанесіть невелику кількість на очищену шкіру. Дайте засобу повністю впитатися. Використовуйте регулярно для найкращого результату."
 
     {
