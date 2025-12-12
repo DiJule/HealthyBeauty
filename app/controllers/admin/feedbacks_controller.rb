@@ -1,4 +1,4 @@
-class Admin::FeedbackController < ApplicationController
+class Admin::FeedbacksController < ApplicationController
   before_action :authenticate_user!
   before_action :check_admin!
 
