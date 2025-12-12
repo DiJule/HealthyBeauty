@@ -1,13 +1,23 @@
 one:
   user: one
-  status: "confirmed"
+  status: confirmed
   total: 199.99
-  delivery_method: "courier"
-  delivery_option: "express"
+  delivery_method: courier
+  delivery_option: express
+  delivery_type: home
+  payment_method: card
+  contact_name: "Іван Петренко"
+  contact_phone: "+380501234567"
+  contact_email: "ivan@example.com"
 
 two:
   user: two
-  status: "processing"
+  status: pending
   total: 89.50
-  delivery_method: "pickup"
-  delivery_option: "standard"
+  delivery_method: pickup
+  delivery_option: standard
+  delivery_type: store
+  payment_method: cash
+  contact_name: "Олена Іваненко"
+  contact_phone: "+380671112233"
+  contact_email: "olena@example.com"
