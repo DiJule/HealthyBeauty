@@ -1,0 +1,29 @@
+services:
+  - type: web
+    name: healthybeauty
+    runtime: docker
+    region: frankfurt
+    plan: free
+    
+    # Build configuration
+    dockerfilePath: ./Dockerfile
+    
+    # Environment variables
+    envVars:
+      - key: RAILS_ENV
+        value: production
+      - key: RAILS_LOG_TO_STDOUT
+        value: "true"
+      - key: RAILS_SERVE_STATIC_FILES
+        value: "true"
+      # RAILS_MASTER_KEY and DATABASE_URL will be set in Render dashboard
+      - key: RAILS_MASTER_KEY
+        sync: false  # Will be provided manually in Render dashboard
+
+    # Database
+databases:
+  - name: healthybeauty-db
+    databaseName: healthybeauty_production
+    region: frankfurt
+    plan: free
+    postgresSQLVersion: "15"

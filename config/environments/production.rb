@@ -22,6 +22,8 @@ Rails.application.configure do
 
   # Disable serving static files from `public/`, relying on NGINX/Apache to do so instead.
   # config.public_file_server.enabled = false
+  # For Render, we need to serve static files (CSS, JS, images)
+  config.public_file_server.enabled = ENV["RAILS_SERVE_STATIC_FILES"].present?
 
   # Compress CSS using a preprocessor.
   # config.assets.css_compressor = :sass
@@ -49,7 +51,8 @@ Rails.application.configure do
   # config.assume_ssl = true
 
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
-  config.force_ssl = true
+  # Disabled for Render free tier (uses its own SSL)
+  config.force_ssl = false
 
   # Skip http-to-https redirect for the default health check endpoint.
   # config.ssl_options = { redirect: { exclude: ->(request) { request.path == "/up" } } }

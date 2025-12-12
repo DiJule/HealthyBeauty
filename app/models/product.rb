@@ -7,4 +7,13 @@ class Product < ApplicationRecord
   validates :name, :price, presence: true
   validates :price, numericality: { greater_than_or_equal_to: 0 }
   validates :stock, numericality: { greater_than_or_equal_to: 0 }
+
+  # Helper methods for AI-generated content
+  def characteristics_list
+    characteristics&.split("\n")&.map(&:strip)&.reject(&:blank?) || []
+  end
+
+  def benefits_list
+    benefits&.split("\n")&.map(&:strip)&.reject(&:blank?) || []
+  end
 end

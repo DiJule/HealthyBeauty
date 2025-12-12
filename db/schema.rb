@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_12_09_000100) do
+ActiveRecord::Schema[7.2].define(version: 2025_12_11_215108) do
   create_table "activity_logs", force: :cascade do |t|
     t.integer "user_id"
     t.string "path"
@@ -108,6 +108,9 @@ ActiveRecord::Schema[7.2].define(version: 2025_12_09_000100) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "image"
+    t.text "characteristics"
+    t.text "benefits"
+    t.text "usage"
     t.index ["category_id"], name: "index_products_on_category_id"
   end
 

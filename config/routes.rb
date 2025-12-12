@@ -27,6 +27,9 @@ Rails.application.routes.draw do
 
   resources :products do
     resources :reviews, only: [ :create, :destroy ]
+    member do
+      post :analyze_with_ai
+    end
   end
 
   resources :cart_items, only: [ :create, :update, :destroy ]
@@ -39,6 +42,7 @@ Rails.application.routes.draw do
   post "payments/callback", to: "payments#callback", as: :payments_callback
 
   resources :users, only: [ :index ]
+  resources :chat, only: [:index, :create]
 
   get "admin/dashboard", to: "admin#dashboard"
   get "admin/orders", to: "admin_orders#index", as: :admin_orders

@@ -19,10 +19,51 @@
         <% if current_user&.admin? %>
           <%= link_to "Редагувати", edit_product_path(@product), class: "pure-button" %>
           <%= link_to "Видалити", @product, method: :delete, data: { confirm: "Видалити товар?" }, class: "pure-button pure-button-error" %>
+          <%= button_to "✨ Доповнити AI", analyze_with_ai_product_path(@product), method: :post, class: "pure-button pure-button-info", data: { confirm: "Дозволити AI аналізувати товар?" } %>
         <% end %>
       </div>
     </div>
   </div>
+
+  <!-- AI-Generated Characteristics Section -->
+  <% if @product.characteristics_list.present? || @product.benefits_list.present? || @product.usage.present? %>
+    <div class="product-ai-section" style="margin: 30px 0; padding: 20px; background: #f0f8ff; border-left: 4px solid #007bff; border-radius: 4px;">
+      <h2 style="color: #007bff;"><i class="fa fa-brain"></i> Дані від AI аналізу</h2>
+      
+      <% if @product.characteristics_list.present? %>
+        <div class="characteristics-section" style="margin: 20px 0;">
+          <h3>Характеристики:</h3>
+          <ul style="list-style-type: none; padding: 0;">
+            <% @product.characteristics_list.each do |char| %>
+              <li style="padding: 8px 0; border-bottom: 1px solid #ddd;">
+                <i class="fa fa-check-circle" style="color: #28a745;"></i> <%= char %>
+              </li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <% if @product.benefits_list.present? %>
+        <div class="benefits-section" style="margin: 20px 0;">
+          <h3>Переваги:</h3>
+          <ul style="list-style-type: none; padding: 0;">
+            <% @product.benefits_list.each do |benefit| %>
+              <li style="padding: 8px 0; border-bottom: 1px solid #ddd;">
+                <i class="fa fa-star" style="color: #ffc107;"></i> <%= benefit %>
+              </li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <% if @product.usage.present? %>
+        <div class="usage-section" style="margin: 20px 0;">
+          <h3>Як використовувати:</h3>
+          <p style="line-height: 1.6; color: #333;"><%= @product.usage %></p>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
 
   <div class="product-reviews">
     <h2><i class="fa fa-star"></i> Відгуки</h2>

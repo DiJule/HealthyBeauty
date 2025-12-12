@@ -1,0 +1,232 @@
+﻿<h1 align="center">Chat Assistant</h1>
+
+<style>
+  .chat-container {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 0;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    overflow: hidden;
+  }
+  
+  .chat-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 25px;
+    text-align: center;
+  }
+  
+  .chat-header h2 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: bold;
+  }
+  
+  .chat-header p {
+    margin: 8px 0 0 0;
+    opacity: 0.9;
+    font-size: 14px;
+  }
+  
+  #chat-window {
+    border-bottom: 1px solid #e0e0e0;
+    padding: 20px;
+    height: 450px;
+    overflow-y: auto;
+    background: #f8f9fa;
+  }
+  
+  #chat-form {
+    display: flex;
+    gap: 12px;
+    padding: 15px 20px;
+    background: white;
+  }
+  
+  #chat-input {
+    flex: 1;
+    padding: 10px 14px;
+    border: 2px solid #e0e0e0;
+    border-radius: 6px;
+    font-size: 14px;
+    font-family: inherit;
+  }
+  
+  #chat-input:focus {
+    outline: none;
+    border-color: #667eea !important;
+  }
+  
+  button[type="submit"] {
+    padding: 10px 24px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: transform 0.2s;
+  }
+  
+  button[type="submit"]:hover {
+    transform: translateY(-2px);
+  }
+  
+  .user-msg {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 15px;
+  }
+  
+  .user-msg-text {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 10px 14px;
+    border-radius: 12px 12px 4px 12px;
+    max-width: 70%;
+    word-wrap: break-word;
+  }
+  
+  .bot-msg {
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 15px;
+  }
+  
+  .bot-msg-text {
+    background: white;
+    color: #333;
+    padding: 10px 14px;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px 12px 12px 4px;
+    max-width: 70%;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+    line-height: 1.4;
+  }
+  
+  .initial-msg {
+    text-align: center;
+    padding: 30px 20px;
+    color: #999;
+  }
+  
+  .initial-msg p {
+    margin: 0 0 8px 0;
+    font-size: 16px;
+  }
+  
+  @media (max-width: 600px) {
+    .chat-container {
+      margin: 10px;
+    }
+    #chat-window {
+      height: 300px;
+    }
+    .user-msg-text, .bot-msg-text {
+      max-width: 90%;
+    }
+  }
+  
+</style>
+
+<div class="chat-container">
+  <div class="chat-header">
+    <h2>Bot Assistant</h2>
+    <p>Ask questions about products, categories, orders and more!</p>
+  </div>
+
+  <div id="chat-window">
+    <div class="initial-msg">
+      <p>Hello! How can I help you?</p>
+      <p style="font-size: 12px;">Ask about products, categories, your cart, orders...</p>
+    </div>
+  </div>
+
+  <form id="chat-form">
+    <input 
+      type="text" 
+      id="chat-input" 
+      placeholder="Ask about products..." 
+      autocomplete="off"
+    />
+    <button type="submit">Send</button>
+  </form>
+</div>
+
+<script>
+  document.getElementById('chat-form').addEventListener('submit', function(event) {
+    event.preventDefault();
+    var inputField = document.getElementById('chat-input');
+    var message = inputField.value.trim();
+    
+    if (!message) return;
+
+    addUserMessage(message);
+    inputField.value = '';
+
+    var csrfToken = document.querySelector('meta[name="csrf-token"]');
+    var headers = { 'Content-Type': 'application/json' };
+    
+    if (csrfToken) {
+      headers['X-CSRF-Token'] = csrfToken.getAttribute('content');
+    }
+
+    fetch('<%= chat_index_path %>', {
+      method: 'POST',
+      headers: headers,
+      body: JSON.stringify({ message: message })
+    })
+    .then(function(response) {
+      if (!response.ok) throw new Error('HTTP ' + response.status);
+      return response.json();
+    })
+    .then(function(data) {
+      var botText = data.text || 'No response';
+      if (data.url) {
+        botText += '\n\nView: ' + data.url;
+      }
+      addBotMessage(botText);
+    })
+    .catch(function(error) {
+      console.error('Error:', error);
+      addBotMessage('Sorry, I encountered an error. Please try again.');
+    });
+  });
+
+  function addUserMessage(text) {
+    var chatWindow = document.getElementById('chat-window');
+    
+    // Remove initial message if present
+    var initialMsg = chatWindow.querySelector('.initial-msg');
+    if (initialMsg) {
+      initialMsg.remove();
+    }
+    
+    var msgDiv = document.createElement('div');
+    msgDiv.className = 'user-msg';
+    var textDiv = document.createElement('div');
+    textDiv.className = 'user-msg-text';
+    textDiv.textContent = text;
+    msgDiv.appendChild(textDiv);
+    chatWindow.appendChild(msgDiv);
+    chatWindow.scrollTop = chatWindow.scrollHeight;
+  }
+
+  function addBotMessage(text) {
+    var chatWindow = document.getElementById('chat-window');
+    var msgDiv = document.createElement('div');
+    msgDiv.className = 'bot-msg';
+    var textDiv = document.createElement('div');
+    textDiv.className = 'bot-msg-text';
+    textDiv.textContent = text;
+    msgDiv.appendChild(textDiv);
+    chatWindow.appendChild(msgDiv);
+    chatWindow.scrollTop = chatWindow.scrollHeight;
+  }
+
+  // Focus on input when page loads
+  document.getElementById('chat-input').focus();
+</script>

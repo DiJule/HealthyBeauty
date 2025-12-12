@@ -64,6 +64,26 @@ class ProductsController < ApplicationController
     redirect_to products_path, notice: "Видалено"
   end
 
+  def analyze_with_ai
+    @product = Product.find(params[:id])
+    require_admin
+    
+    # Call LocalAiService to analyze the product
+    analysis = LocalAiService.analyze_product(@product.name, @product.description)
+    
+    # Log for debugging
+    Rails.logger.info("Product: #{@product.name}, Desc: #{@product.description}")
+    Rails.logger.info("Analysis: #{analysis.inspect}")
+    
+    # Update product with AI-generated content
+    @product.update(
+      characteristics: analysis["characteristics"]&.join("\n"),
+      benefits: analysis["benefits"]&.join("\n"),
+      usage: analysis["usage"]
+    )
+    redirect_to @product, notice: "✨ Товар успішно доповнено характеристиками!"
+  end
+
 
   private
 
@@ -74,6 +94,6 @@ class ProductsController < ApplicationController
   end
 
   def product_params
-    params.require(:product).permit(:name, :description, :price, :stock, :category_id, :image)
+    params.require(:product).permit(:name, :description, :price, :stock, :category_id, :image, :characteristics, :benefits, :usage)
   end
 end
