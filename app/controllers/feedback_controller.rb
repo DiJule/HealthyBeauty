@@ -1,4 +1,4 @@
-class FeedbacksController < ApplicationController
+class FeedbackController < ApplicationController
   before_action :authenticate_user!
 
   def new
