@@ -15,11 +15,11 @@ class AdminController < ApplicationController
                                  .order("date(created_at)")
                                  .count
     # Fill missing days with 0
-(13.days.ago.to_date..Date.today).each do |date|
-  @activity_by_day[date] ||= 0
-end
-
-@activity_by_day = @activity_by_day.sort_by { |date, _| date }.to_h
+    (13.days.ago.to_date..Date.today).each do |date|
+      @activity_by_day[date] ||= 0
+    end
+    
+    @activity_by_day = @activity_by_day.sort_by { |date, _| date }.to_h
 
 
     # Top paths - provide at least empty data
