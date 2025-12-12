@@ -71,9 +71,9 @@ jobs:
         env:
           RAILS_ENV: test
         run: |
-          bin/rails db:test:prepare
-          bin/rails test
-          bin/rails test:system
+          bundle exec rails db:test:prepare
+          bundle exec rails test
+          bundle exec rails test:system
 
       - name: Upload screenshots on failure
         if: failure()
