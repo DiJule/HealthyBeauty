@@ -1,14 +1,10 @@
-# LiqPay Configuration Initializer
-# This file loads and validates LiqPay API credentials from environment variables
-
 Rails.application.config.to_prepare do
   LIQPAY_CONFIG = {
-    public_key: ENV.fetch("LIQPAY_PUBLIC_KEY", ""),
-    private_key: ENV.fetch("LIQPAY_PRIVATE_KEY", "")
+    public_key: Rails.application.credentials.dig(:liqpay, :public_key),
+    private_key: Rails.application.credentials.dig(:liqpay, :private_key)
   }.freeze
 
-  # Log warning if keys are not configured (but don't fail on startup)
   if LIQPAY_CONFIG[:public_key].blank? || LIQPAY_CONFIG[:private_key].blank?
-    Rails.logger.warn("⚠️  LiqPay credentials not fully configured. Set LIQPAY_PUBLIC_KEY and LIQPAY_PRIVATE_KEY in .env")
+    Rails.logger.warn("⚠️ LiqPay credentials are missing in Rails credentials")
   end
 end
