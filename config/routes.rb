@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  mount Rswag::Ui::Engine => "/api-docs"
+  mount Rswag::Api::Engine => "/api-docs"
   devise_for :users
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
@@ -15,6 +17,12 @@ Rails.application.routes.draw do
 
   root "home#index"
 
+
+  namespace :api do
+    namespace :v1 do
+      resources :products, only: [ :index, :create ]
+    end
+  end
 
   get "about", to: "pages#about"
   get "contact", to: "pages#contact"

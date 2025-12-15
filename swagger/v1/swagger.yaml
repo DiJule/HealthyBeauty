@@ -1,0 +1,42 @@
+---
+openapi: 3.0.1
+info:
+  title: API V1
+  version: v1
+paths:
+  "/api/v1/products":
+    get:
+      summary: Отримати список продуктів
+      tags:
+      - Products
+      responses:
+        '200':
+          description: успішно
+    post:
+      summary: Створити продукт
+      tags:
+      - Products
+      parameters: []
+      responses:
+        '201':
+          description: створено
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                price:
+                  type: number
+                category:
+                  type: string
+              required:
+              - name
+              - price
+servers:
+- url: https://{defaultHost}
+  variables:
+    defaultHost:
+      default: www.example.com
